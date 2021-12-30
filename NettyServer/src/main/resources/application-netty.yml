@@ -1,0 +1,4 @@
+rpc:
+  netty:
+    host: localhost
+    port: 1234

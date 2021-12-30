@@ -9,11 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>NettyClient</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>NettyServer</artifactId>
 
     <properties>
-        <jackson.version>2.12.1</jackson.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -31,7 +29,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
-
 
 
 </project>

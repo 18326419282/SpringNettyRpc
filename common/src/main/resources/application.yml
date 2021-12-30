@@ -1,8 +1,0 @@
-spring:
-  zookeeper:
-    connetion: localhost:2181
-    zk_session_timeout: 3000
-    zk_connect_timeout: 3000
-    zk_registry_path: "/registry"
-    zk_data_path:  "/data"
-    zk_nameSpace: nettyRPC
