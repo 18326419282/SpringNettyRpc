@@ -1,7 +1,7 @@
 package com.example.zk;
 
+import com.alibaba.fastjson.JSON;
 import com.example.netty.NettyInfo;
-import com.example.util.JsonUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class ZookeeperResponse {
     private List<String> ServiceList;
 
     public String toJson() {
-        String json = JsonUtil.objectToJson(this);
+        String json = JSON.toJSONString(this);
         return json;
     }
 }

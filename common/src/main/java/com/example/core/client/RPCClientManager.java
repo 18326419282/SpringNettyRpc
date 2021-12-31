@@ -40,6 +40,7 @@ public class RPCClientManager implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        getServiceAndUpdateServer();
         zookeeperConnect.pathListener(zookeeperInfo.getZk_registry_path(),
                 (type, childData) -> {
                     try {
