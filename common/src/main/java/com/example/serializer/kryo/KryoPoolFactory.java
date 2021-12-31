@@ -14,7 +14,8 @@ public class KryoPoolFactory {
         @Override
         public Kryo create() {
             Kryo kryo = new Kryo();
-            kryo.setReferences(false);
+            kryo.setReferences(true);
+            kryo.setRegistrationRequired(false);
             kryo.register(RpcRequest.class);
             kryo.register(RpcResponse.class);
             Kryo.DefaultInstantiatorStrategy strategy = (Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy();

@@ -1,3 +1,10 @@
-spring:
-  profiles:
-    active: application,zookeeper,netty
+server:
+  port: 8180
+rpc:
+  type: server
+  netty:
+    host: localhost
+    port: 1234
+  zookeeper:
+    connetion: 121.41.2.108:2181
+

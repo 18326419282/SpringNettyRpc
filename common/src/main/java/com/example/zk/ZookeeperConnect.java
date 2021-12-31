@@ -29,6 +29,7 @@ public class ZookeeperConnect implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         curatorClient = new CuratorClient(getCuratorBuilder(zookeeperInfo));
+        curatorClient.start();
     }
 
 

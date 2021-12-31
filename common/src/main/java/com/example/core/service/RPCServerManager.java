@@ -1,4 +1,4 @@
-package com.example.core.client;
+package com.example.core.service;
 
 import com.example.core.RpcProtocol;
 import com.example.netty.NettyInfo;
@@ -9,25 +9,19 @@ import com.example.zk.ZookeeperResponse;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.recipes.cache.ChildData;
-import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.state.ConnectionState;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-@Component
 @Data
 @Slf4j
-public class PRCClientManage implements InitializingBean {
+public class RPCServerManager implements InitializingBean {
 
     @Autowired
     private ZookeeperConnect zookeeperConnect;
@@ -55,7 +49,23 @@ public class PRCClientManage implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        nettyServer.start();
+        registService();
         zookeeperConnect.addConnectionStateListener(this::stateChanged);
+    }
+
+    public void registService() {
+        try {
+            ZookeeperResponse zookeeperResponse = ZookeeperResponse.builder().nettyInfo(nettyInfo).ServiceList(nettyServer.getServiceMap().keySet().stream().collect(Collectors.toList())).build();
+            zookeeperConnect.createPathData(getzkPath(String.valueOf(zookeeperResponse.hashCode())), zookeeperResponse.toJson().getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("注册时发生问题:"+e);
+        }
+    }
+
+    public String getzkPath(String path){
+       return zookeeperInfo.getZk_real_date_path()+"-"+ path;
     }
 
     public void stateChanged(CuratorFramework curatorFramework, ConnectionState connectionState) {
@@ -63,7 +73,7 @@ public class PRCClientManage implements InitializingBean {
             log.info("Connection state: {}, register service after reconnected", connectionState);
             try {
                 ZookeeperResponse zookeeperResponse = ZookeeperResponse.builder().nettyInfo(nettyInfo).ServiceList(nettyServer.getServiceMap().keySet().stream().collect(Collectors.toList())).build();
-                zookeeperConnect.createPathData(String.valueOf(zookeeperResponse.hashCode()), zookeeperResponse.toJson().getBytes());
+                zookeeperConnect.createPathData(getzkPath(String.valueOf(zookeeperResponse.hashCode())), zookeeperResponse.toJson().getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error("注册时发生问题:" + e);

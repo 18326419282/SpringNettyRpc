@@ -1,4 +1,4 @@
-package com.example.core.service;
+package com.example.core.client;
 
 import com.example.core.RpcProtocol;
 import com.example.zk.ZookeeperConnect;
@@ -9,7 +9,6 @@ import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,10 +17,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-@Component
 @Data
 @Slf4j
-public class PRCServiceManage implements InitializingBean {
+public class RPCClientManager implements InitializingBean {
 
     @Autowired
     private ZookeeperConnect zookeeperConnect;

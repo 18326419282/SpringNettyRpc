@@ -38,7 +38,7 @@ public class RPCAutoWiredRegistrar implements ImportBeanDefinitionRegistrar, Res
         AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(
                 RPCService.class);
         scanner.addIncludeFilter(annotationTypeFilter);
-        String basePackage = "com.example.demo";
+        String basePackage = "com.example";
         Set<BeanDefinition> candidateComponents = scanner
                 .findCandidateComponents(basePackage);
         System.out.println(candidateComponents);

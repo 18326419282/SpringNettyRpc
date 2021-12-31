@@ -1,4 +1,4 @@
-package com.example.bean;
+package com.example.config;
 
 import com.example.zk.ZookeeperConnect;
 import com.example.zk.ZookeeperInfo;
@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class BeanConfig {
+public class CommonBeanConfig {
 
     @Bean
     public ZookeeperConnect zookeeperConnect(ZookeeperInfo zookeeperInfo) {
