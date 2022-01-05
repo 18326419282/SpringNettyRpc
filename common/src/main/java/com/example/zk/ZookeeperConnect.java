@@ -10,8 +10,9 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 @Data
@@ -34,11 +35,11 @@ public class ZookeeperConnect implements InitializingBean {
 
 
     public CuratorFrameworkFactory.Builder getCuratorBuilder(ZookeeperInfo zookeeperInfo) {
-        return  getCuratorBuilder(zookeeperInfo.getConnetion(), zookeeperInfo.getZk_nameSpace(), zookeeperInfo.getZk_session_timeout(), zookeeperInfo.getZk_connect_timeout());
+        return getCuratorBuilder(zookeeperInfo.getConnetion(), zookeeperInfo.getZk_nameSpace(), zookeeperInfo.getZk_session_timeout(), zookeeperInfo.getZk_connect_timeout());
 
     }
 
-        public CuratorFrameworkFactory.Builder getCuratorBuilder(String connectString, String namespace, int sessionTimeout, int connectionTimeout) {
+    public CuratorFrameworkFactory.Builder getCuratorBuilder(String connectString, String namespace, int sessionTimeout, int connectionTimeout) {
         CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder().namespace(namespace).connectString(connectString)
                 .sessionTimeoutMs(sessionTimeout).connectionTimeoutMs(connectionTimeout)
                 .retryPolicy(new ExponentialBackoffRetry(1000, 10));
@@ -46,21 +47,20 @@ public class ZookeeperConnect implements InitializingBean {
     }
 
 
-    public List<String> getChildInfoString() throws Exception {
-        List<String> infoData = new ArrayList<>();
+    public Map<String, String> getChildInfoString() throws Exception {
+        Map<String, String> infoData = new HashMap<>();
         List<String> childPathList = curatorClient.getChildren(zookeeperInfo.getZk_registry_path());
         for (String childPath : childPathList) {
-            infoData.add(new String(curatorClient.getData(zookeeperInfo.getZk_registry_path() + "/" + childPath)));
+            infoData.put(zookeeperInfo.getZk_registry_path() + "/" + childPath, new String(curatorClient.getData(zookeeperInfo.getZk_registry_path() + "/" + childPath)));
         }
         return infoData;
-
     }
 
-    public List<String> getChildInfoString(String path) throws Exception {
-        List<String> infoData = new ArrayList<>();
+    public Map<String, String> getChildInfoString(String path) throws Exception {
+        Map<String, String> infoData = new HashMap<>();
         List<String> childPathList = curatorClient.getChildren(path);
         for (String childPath : childPathList) {
-            infoData.add(new String(curatorClient.getData(childPath)));
+            infoData.put(path + "/" + childPath, new String(curatorClient.getData(childPath)));
         }
         return infoData;
     }
@@ -98,4 +98,7 @@ public class ZookeeperConnect implements InitializingBean {
         curatorClient.setData().forPath(path, data);
     }
 
+    public void stop() {
+        curatorClient.close();
+    }
 }

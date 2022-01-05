@@ -18,7 +18,7 @@ public class RpcProtocol {
 
     private NettyInfo nettyInfo;
     private List<String> ServiceList;
-
+    private String path;
 
     public String toJson() {
         String json = JSON.toJSONString(this);

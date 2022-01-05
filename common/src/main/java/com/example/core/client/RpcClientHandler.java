@@ -4,8 +4,10 @@ import com.example.core.RpcFuture;
 import com.example.core.RpcProtocol;
 import com.example.core.RpcRequest;
 import com.example.core.RpcResponse;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -74,4 +76,9 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
         return rpcFuture;
 
     }
+
+    public void close() {
+        channel.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+    }
+
 }

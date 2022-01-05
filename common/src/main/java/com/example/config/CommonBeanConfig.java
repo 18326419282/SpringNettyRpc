@@ -1,7 +1,10 @@
 package com.example.config;
 
+import com.example.route.RpcLoadBalance;
+import com.example.route.impl.RpcLoadBalanceRoundRobin;
 import com.example.zk.ZookeeperConnect;
 import com.example.zk.ZookeeperInfo;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,5 +27,11 @@ public class CommonBeanConfig {
                 r -> new Thread(r, "netty-rpc-" + "-" + r.hashCode()),
                 new ThreadPoolExecutor.AbortPolicy());
         return serverHandlerPool;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(RpcLoadBalance.class)
+    public RpcLoadBalance rpcLoadBalance(){
+        return new RpcLoadBalanceRoundRobin();
     }
 }
