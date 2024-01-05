@@ -6,5 +6,5 @@ rpc:
     host: localhost
     port: 1234
   zookeeper:
-    connetion: 121.41.2.108:2181
+    connetion: localhost:2181
 

@@ -150,7 +150,6 @@ public class RPCClientManager implements InitializingBean, DisposableBean {
                     log.info("Successfully connect to remote server, remote peer = " + rpcProtocol.getNettyInfo().getHost() + ":" + rpcProtocol.getNettyInfo().getPort());
                     RpcClientHandler handler = channelFuture.channel().pipeline().get(RpcClientHandler.class);
                     connectedServerNodes.put(rpcProtocol.getPath(), handler);
-                    handler.setRpcProtocol(rpcProtocol);
 //                            signalAvailableHandler();
                 } else {
                     log.error("Can not connect to remote server, remote peer = " + rpcProtocol.getNettyInfo().getHost() + ":" + rpcProtocol.getNettyInfo().getPort());
@@ -160,8 +159,7 @@ public class RPCClientManager implements InitializingBean, DisposableBean {
     }
 
     public void updateHandlerServer(RpcProtocol rpcProtocol) {
-        RpcClientHandler handler = connectedServerNodes.get(rpcProtocol.getPath());
-        handler.setRpcProtocol(rpcProtocol);
+        rpcProtocolMap.put(rpcProtocol.getPath(),rpcProtocol);
     }
 
     private void signalAvailableHandler() {

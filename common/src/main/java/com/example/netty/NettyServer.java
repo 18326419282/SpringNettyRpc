@@ -30,7 +30,7 @@ public class NettyServer implements ApplicationContextAware {
 
     public void start(){
         EventLoopGroup boss = new NioEventLoopGroup();
-        EventLoopGroup worker = new NioEventLoopGroup();
+        EventLoopGroup worker = new NioEventLoopGroup(10);
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(boss,worker).channel(NioServerSocketChannel.class).childHandler(new RpcServerInitializer(serviceMap,threadPoolExecutor))
         .option(ChannelOption.SO_BACKLOG,128).childOption(ChannelOption.SO_KEEPALIVE,true);

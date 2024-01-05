@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Data
 public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
-    private RpcProtocol rpcProtocol;
     private ConcurrentHashMap<String, RpcFuture> pendingRPC = new ConcurrentHashMap<>();
     private volatile Channel channel;
 
@@ -79,6 +78,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
     public void close() {
         channel.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        channel.close();
     }
 
 }
