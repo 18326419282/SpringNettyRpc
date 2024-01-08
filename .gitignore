@@ -2,3 +2,5 @@
 SpringNettyRpc.iml
 common/common.iml
 *.iml
+*/target/
+
